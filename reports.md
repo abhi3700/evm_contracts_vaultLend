@@ -75,31 +75,31 @@ All files        |      100 |       90 |      100 |      100 |                |
 ## Deployment
 
 ```console
-❯ yarn hardhat deploy:All --network rinkeby                                                                                                                           ⏎
+❯ yarn hardhat deploy:All --network rinkeby
 yarn run v1.22.18
-$ /Users/abhi3700/F/coding/github_repos/x/x/node_modules/.bin/hardhat deploy:All --network rinkeby
-PRIME token SC deployed to:  0x516F6C907f840A733de05b962FD7bA1E1d5f5ed8
-The transaction that was sent to the network to deploy the PRIME token contract: 0xf29f44194acd33ad9a13bb5652bbf14c7290c91c0b33523c23cfeaec12b41d21
-pUSD Coin SC deployed to:  0x9975Bb4628824540e3E722090b05E33554c9738e
-The transaction that was sent to the network to deploy the pUSD Coin contract: 0xfb9d85c9dbef24e7ef4cf081f15590b14d9b54f7a17bd2eb10bae04f80e76208
-Vault SC deployed to:  0xaD8aAFE5D6e74d88f079fb10A5E82a55B93CD016
-The transaction that was sent to the network to deploy the Vault contract: 0x8299843dc17e2125c69eaa3ded32916f5ccfc06c73fafd9851861b4c74dcb302
-✨  Done in 44.48s.
+$ /Users/abhi3700/F/coding/github_repos/evm_contracts_vaultLend/node_modules/.bin/hardhat deploy:All --network rinkeby
+PRIME token SC deployed to:  0x89C1142bF7Ef439367F8F414D54B5F6a3021EeEc
+The transaction that was sent to the network to deploy the PRIME token contract: 0xe2331532c3576b798efba673924c2a20dd42a60f01da991f36d163f15c2cead4
+pUSD Coin SC deployed to:  0x0b451Ed67bB203f998c69d66f2Cd32f89E452bc9
+The transaction that was sent to the network to deploy the pUSD Coin contract: 0xd4c98bba1a1ea41934bbbd2e41af621d39b3c38fb7b7b8a9503a57a1b3f896f6
+Vault SC deployed to:  0x4939463F9285097d7BfCB5B72B0649c59BF5C637
+The transaction that was sent to the network to deploy the Vault contract: 0x754fc5bcfd63d2f1f9748564fc95569083f60975dfe86121591a2f3e04249efd
+✨  Done in 42.99s.
 ```
 
 ## Verify
 
 ```console
-❯ yarn verify rinkeby 0xaD8aAFE5D6e74d88f079fb10A5E82a55B93CD016 "0x516F6C907f840A733de05b962FD7bA1E1d5f5ed8" "0x9975Bb4628824540e3E722090b05E33554c9738e" "1"                                                  ⏎
+❯ yarn verify rinkeby 0x4939463F9285097d7BfCB5B72B0649c59BF5C637 "0x89C1142bF7Ef439367F8F414D54B5F6a3021EeEc" "0x0b451Ed67bB203f998c69d66f2Cd32f89E452bc9" "1"                        ⏎
 yarn run v1.22.18
-$ hardhat verify --network rinkeby 0xaD8aAFE5D6e74d88f079fb10A5E82a55B93CD016 0x516F6C907f840A733de05b962FD7bA1E1d5f5ed8 0x9975Bb4628824540e3E722090b05E33554c9738e 1
+$ hardhat verify --network rinkeby 0x4939463F9285097d7BfCB5B72B0649c59BF5C637 0x89C1142bF7Ef439367F8F414D54B5F6a3021EeEc 0x0b451Ed67bB203f998c69d66f2Cd32f89E452bc9 1
 Nothing to compile
 No need to generate any newer typings.
 Successfully submitted source code for contract
-contracts/Vault.sol:Vault at 0xaD8aAFE5D6e74d88f079fb10A5E82a55B93CD016
+contracts/Vault.sol:Vault at 0x4939463F9285097d7BfCB5B72B0649c59BF5C637
 for verification on Etherscan. Waiting for verification result...
 
 Successfully verified contract Vault on Etherscan.
-https://rinkeby.etherscan.io/address/0xaD8aAFE5D6e74d88f079fb10A5E82a55B93CD016#code
-✨  Done in 40.82s.
+https://rinkeby.etherscan.io/address/0x4939463F9285097d7BfCB5B72B0649c59BF5C637#code
+✨  Done in 26.52s.
 ```
