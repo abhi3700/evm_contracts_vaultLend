@@ -281,7 +281,7 @@ export function testVault(): void {
       });
     });
 
-    describe.only("Vault: Withdraw pUSD", async () => {
+    describe("Vault: Withdraw pUSD", async () => {
       beforeEach(async () => {
         // addr1 deposit 1000 PRIME
         await expect(
