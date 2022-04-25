@@ -96,9 +96,9 @@ contract Vault is Ownable, Pausable {
         return interestAmt;
     }
 
-    function getInterest() public view returns (uint256) {
-        return userMapping[_msgSender()].totInterestAmt;
-    }
+    // function getInterest() public view returns (uint256) {
+    //     return userMapping[_msgSender()].totInterestAmt;
+    // }
 
     function getDepositedAmt() public view returns (uint256) {
         return userMapping[_msgSender()].depositedAmt;

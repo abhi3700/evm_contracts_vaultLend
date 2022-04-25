@@ -3,7 +3,7 @@
 ## Coverage
 
 ```console
-❯ yarn coverage
+❯ yarn coverage                                                                                                                                                                       ⏎
 yarn run v1.22.18
 $ hardhat coverage --solcoverjs ./.solcover.js --temp build --network hardhat
 
@@ -33,15 +33,15 @@ No need to generate any newer typings.
 
 
   ERC20 Token contract
-    Ownable for Vault
+    All: Ownable
       ✔ Should have the correct owner
       ✔ Owner is able to transfer ownership
-    Pausable for Vault
+    All: Pausable
       ✔ Owner is able to pause when NOT paused
-      ✔ Owner is able to unpause when already paused
-      ✔ Owner is NOT able to pause when already paused
-      ✔ Owner is NOT able to unpause when already unpaused
-    Mint for PRIME token
+      ✔ Owner is able to unpause when already paused (65ms)
+      ✔ Owner is NOT able to pause when already paused (61ms)
+      ✔ Owner is NOT able to unpause when already unpaused (73ms)
+    PRIME token: Mint
       ✔ Succeeds when owner mints token
       ✔ Reverts when non-owner mints token
       ✔ Reverts when owner mints zero token
@@ -49,25 +49,27 @@ No need to generate any newer typings.
       ✔ Reverts when paused
     Vault: Deposit PRIME
       ✔ Succeeds when PRIME is deposited
+      ✔ Reverts when zero amount deposited
     Vault: Withdraw pUSD
-1650920279
-      ✔ Succeeds when withdrawn pUSD after deposit of PRIME
+      ✔ Succeeds when withdrawn pUSD after 1 time deposit of PRIME token
+      ✔ Succeeds when withdrawn pUSD after 2 times deposit of PRIME token (41ms)
+      ✔ Reverts when no deposit of PRIME token
 
 
-  13 passing (3s)
+  16 passing (4s)
 
 -----------------|----------|----------|----------|----------|----------------|
 File             |  % Stmts | % Branch |  % Funcs |  % Lines |Uncovered Lines |
 -----------------|----------|----------|----------|----------|----------------|
- contracts/      |    95.83 |    66.67 |    90.91 |    95.83 |                |
-  ERC20Token.sol |    83.33 |      100 |       75 |    83.33 |             44 |
-  Vault.sol      |      100 |       50 |      100 |      100 |                |
+ contracts/      |      100 |       90 |      100 |      100 |                |
+  ERC20Token.sol |      100 |      100 |      100 |      100 |                |
+  Vault.sol      |      100 |     87.5 |      100 |      100 |                |
 -----------------|----------|----------|----------|----------|----------------|
-All files        |    95.83 |    66.67 |    90.91 |    95.83 |                |
+All files        |      100 |       90 |      100 |      100 |                |
 -----------------|----------|----------|----------|----------|----------------|
 
 > Istanbul reports written to ./coverage/ and ./coverage.json
-✨  Done in 11.56s.
+✨  Done in 12.01s.
 ```
 
 ## Deployment
