@@ -1,4 +1,4 @@
-# Interview Exercise: Smart Contracts
+# Smart Contracts
 
 ## Part 1
 
