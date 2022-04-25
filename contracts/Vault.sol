@@ -26,7 +26,6 @@ contract Vault is Ownable, Pausable {
         uint256 depositedAt;
         uint256 depositedAmt;
         uint256 totInterestAmt;
-        uint256 withdrawablePRIME;
     }
     mapping(address => VaultDetails) private userMapping;
 
@@ -59,9 +58,9 @@ contract Vault is Ownable, Pausable {
             _vaultDetails.totInterestAmt = _vaultDetails.totInterestAmt.add(interestAmt);
         }
 
+        // set the current timestamp as latest deposit timestamp & add the amount to deposit Amt
         _vaultDetails.depositedAt = block.timestamp;
-        _vaultDetails.withdrawablePRIME = _vaultDetails.withdrawablePRIME.add(_vaultDetails.depositedAmt);
-        _vaultDetails.depositedAmt = _amount;
+        _vaultDetails.depositedAmt = _vaultDetails.depositedAmt.add(_amount);
 
         // transfer PRIME token from caller to SC
         IERC20(depositToken).transferFrom(_msgSender(), address(this), _amount);
@@ -73,14 +72,20 @@ contract Vault is Ownable, Pausable {
     /// @dev Anyone can withdraw pUSD token as accrued interest
     function withdrawPUSD() external {
         // read the vault details for the caller
-        VaultDetails memory _vaultDetails = userMapping[_msgSender()];
+        VaultDetails storage _vaultDetails = userMapping[_msgSender()];
 
-        require(_vaultDetails.totInterestAmt > 0, "No accrued interest for withdrawal");
+        // calculate the interest when withdrawing pUSD after 1st depositPrime
+        uint256 interestAmt = 0;
 
-        // reset the accrued interest as zero
-        userMapping[_msgSender()].totInterestAmt = 0;
+        if (_vaultDetails.depositedAmt > 0 && _vaultDetails.depositedAt > 0) {
+            interestAmt = _calcInterest(_vaultDetails.depositedAmt, _vaultDetails.depositedAt);
+        } else {
+            require(false, "No accrued interest for withdrawal");
+        }
+
+        _vaultDetails.depositedAt = block.timestamp;        // set the new timestamp & collect the accrued interest based on 1st deposit
         
-        IERC20(usdCoin).transfer(_msgSender(), _vaultDetails.totInterestAmt);
+        IERC20(usdCoin).transfer(_msgSender(), interestAmt);
 
         emit WithdrawnPUSD(_msgSender());
     }

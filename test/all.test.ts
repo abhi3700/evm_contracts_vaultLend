@@ -282,8 +282,8 @@ export function testVault(): void {
     });
 
     describe("Vault: Withdraw pUSD", async () => {
-      beforeEach(async () => {
-        // addr1 deposit 1000 PRIME
+      it("Succeeds when withdrawn pUSD after deposit of PRIME", async () => {
+        // 1. addr1 deposit 1000 PRIME
         await expect(
           vaultContract
             .connect(addr1)
@@ -297,7 +297,7 @@ export function testVault(): void {
         // console.log(`${currentTimestamp}`);
         await setNextTimestamp(currentTimestamp + 12 * 30 * 24 * 3600);
 
-        // addr1 deposit 100 PRIME after 4 months
+        // 2. addr1 deposit 100 PRIME after 4 months
         await expect(
           vaultContract
             .connect(addr1)
@@ -305,32 +305,68 @@ export function testVault(): void {
         )
           .to.emit(vaultContract, "DepositedPRIME")
           .withArgs(addr1.address, BigNumber.from("100000000000000000000"));
-      });
 
-      it("Succeeds when withdrawn pUSD after deposit of PRIME", async () => {
         // verify the deposited
         const depositedAmt = await vaultContract
           .connect(addr1)
           .getDepositedAmt();
-        console.log(`Deposited Amt: ${depositedAmt}`);
+        // console.log(`Deposited Amt: ${depositedAmt}`);
         // expect(depositedAmt).to.eq(BigNumber.from("1000000000000000000000"));
 
         // get the pUSD balance of addr1 after withdraw pUSD
         const balance1Pre = await pusdCoinContract.balanceOf(addr1.address);
-        console.log(`balance before withdraw pUSD: ${balance1Pre}`);
+        // console.log(`balance before withdraw pUSD: ${balance1Pre}`);
 
-        // addr1 withdraw pUSD as accrued Interest from contract
+        // 3. addr1 withdraw pUSD as accrued Interest from contract
         await expect(vaultContract.connect(addr1).withdrawPUSD())
           .to.emit(vaultContract, "WithdrawnPUSD")
           .withArgs(addr1.address);
 
         // get the pUSD balance of addr1 after withdraw pUSD
         const balance1Post = await pusdCoinContract.balanceOf(addr1.address);
-        console.log(`balance after withdraw pUSD: ${balance1Post}`);
+        // console.log(`balance after withdraw pUSD: ${balance1Post}`);
 
         expect(parseInt(balance1Post.sub(balance1Pre))).to.be.lessThan(
           parseInt(depositedAmt)
         );
+      });
+
+      it("Reverts when no accrued interest is present", async () => {
+        // // set time as 4 months from deposit
+        // const currentTimestamp = await getCurrentBlockTimestamp();
+        // // console.log(`${currentTimestamp}`);
+        // await setNextTimestamp(currentTimestamp + 12 * 30 * 24 * 3600);
+
+        // // addr1 deposit 100 PRIME after 4 months
+        // await expect(
+        //   vaultContract
+        //     .connect(addr1)
+        //     .deposit(BigNumber.from("100000000000000000000"))
+        // )
+        //   .to.emit(vaultContract, "DepositedPRIME")
+        //   .withArgs(addr1.address, BigNumber.from("100000000000000000000"));
+
+        // verify the deposited
+        // const depositedAmt = await vaultContract
+        //   .connect(addr1)
+        //   .getDepositedAmt();
+        // console.log(`Deposited Amt: ${depositedAmt}`);
+        // // expect(depositedAmt).to.eq(BigNumber.from("1000000000000000000000"));
+
+        // // get the pUSD balance of addr1 after withdraw pUSD
+        // const balance1Pre = await pusdCoinContract.balanceOf(addr1.address);
+        // // console.log(`balance before withdraw pUSD: ${balance1Pre}`);
+
+        // // addr1 withdraw pUSD as accrued Interest from contract
+        // await expect(vaultContract.connect(addr1).withdrawPUSD())
+        //   .to.emit(vaultContract, "WithdrawnPUSD")
+        //   .withArgs(addr1.address);
+
+        // // get the pUSD balance of addr1 after withdraw pUSD
+        // const balance1Post = await pusdCoinContract.balanceOf(addr1.address);
+        // // console.log(`balance after withdraw pUSD: ${balance1Post}`);
+
+        // expect(balance1Post).to.eq(balance1Pre);
       });
     });
   });
