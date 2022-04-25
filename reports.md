@@ -50,7 +50,7 @@ No need to generate any newer typings.
     Vault: Deposit PRIME
       ✔ Succeeds when PRIME is deposited
     Vault: Withdraw pUSD
-1650919576
+1650920279
       ✔ Succeeds when withdrawn pUSD after deposit of PRIME
 
 
@@ -59,15 +59,15 @@ No need to generate any newer typings.
 -----------------|----------|----------|----------|----------|----------------|
 File             |  % Stmts | % Branch |  % Funcs |  % Lines |Uncovered Lines |
 -----------------|----------|----------|----------|----------|----------------|
- contracts/      |    82.14 |       50 |    83.33 |    82.14 |                |
-  ERC20Token.sol |       50 |       50 |       60 |       50 | 37,38,40,42,53 |
+ contracts/      |    95.83 |    66.67 |    90.91 |    95.83 |                |
+  ERC20Token.sol |    83.33 |      100 |       75 |    83.33 |             44 |
   Vault.sol      |      100 |       50 |      100 |      100 |                |
 -----------------|----------|----------|----------|----------|----------------|
-All files        |    82.14 |       50 |    83.33 |    82.14 |                |
+All files        |    95.83 |    66.67 |    90.91 |    95.83 |                |
 -----------------|----------|----------|----------|----------|----------------|
 
 > Istanbul reports written to ./coverage/ and ./coverage.json
-✨  Done in 11.20s.
+✨  Done in 11.56s.
 ```
 
 ## Deployment

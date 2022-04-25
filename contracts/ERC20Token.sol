@@ -16,7 +16,6 @@ contract ERC20Token is ERC20, Ownable, Pausable {
 
     // ==========Events=============================================
     event TokenMinted(address indexed toAcct, uint256 amount);
-    event TokenBurnt(address indexed fromAcct, uint256 amount);
 
     // ==========Constructor========================================
     constructor(string memory _n, string memory _s) 
@@ -33,14 +32,6 @@ contract ERC20Token is ERC20, Ownable, Pausable {
         return true;
     }
 
-    function burn(address _account, uint256 _amount) external whenNotPaused returns (bool) {
-        require(_amount > 0, "amount must be positive");
-        _burn(_account, _amount);
-
-        emit TokenBurnt(_account, _amount);
-
-        return true;
-    }
 
     // ------------------------------------------------------------------------------------------
     /// @notice Pause contract 
