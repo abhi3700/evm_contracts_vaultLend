@@ -25,8 +25,8 @@ contract Vault is Ownable, Pausable {
     struct VaultDetails {
         uint256 depositedAt;
         uint256 depositedAmt;
-        // uint256 totInterestAmt;
-        // uint256 withdrawableAmt;
+        uint256 totInterestAmt;
+        uint256 withdrawablePRIME;
     }
     mapping(address => VaultDetails) private userMapping;
 
@@ -42,33 +42,57 @@ contract Vault is Ownable, Pausable {
     }
 
     // ==========Functions==========================================
+    /// @notice Anyone can deposit PRIME token
+    /// @dev Anyone can deposit PRIME token
+    /// @param _amount PRIME token amount
     function deposit(uint256 _amount) external {
         require(_amount > 0, "amount must be positive");
         
-        userMapping[_msgSender()].depositedAt = block.timestamp;
-        userMapping[_msgSender()].depositedAmt = _amount;
+        // read the vault data
+        VaultDetails storage _vaultDetails = userMapping[_msgSender()];
 
-        // transfer from caller to SC
+        // calculate the interest
+        uint256 interestAmt = 0;
+
+        if (_vaultDetails.depositedAmt > 0 && _vaultDetails.depositedAt > 0) {
+            interestAmt = _calcInterest(_vaultDetails.depositedAmt, _vaultDetails.depositedAt);
+            _vaultDetails.totInterestAmt = _vaultDetails.totInterestAmt.add(interestAmt);
+        }
+
+        _vaultDetails.depositedAt = block.timestamp;
+        _vaultDetails.withdrawablePRIME = _vaultDetails.withdrawablePRIME.add(_vaultDetails.depositedAmt);
+        _vaultDetails.depositedAmt = _amount;
+
+        // transfer PRIME token from caller to SC
         IERC20(depositToken).transferFrom(_msgSender(), address(this), _amount);
 
         emit DepositedPRIME(_msgSender(), _amount);
     }
 
+    /// @notice Anyone can withdraw pUSD token as accrued interest
+    /// @dev Anyone can withdraw pUSD token as accrued interest
     function withdrawPUSD() external {
-        uint256 _depositAmt = userMapping[_msgSender()].depositedAmt;
-        require(_depositAmt > 0, "No amount deposited");
+        // read the vault details for the caller
+        VaultDetails memory _vaultDetails = userMapping[_msgSender()];
 
-        uint256 interestAmt = getInterest(_depositAmt);
+        require(_vaultDetails.totInterestAmt > 0, "No accrued interest for withdrawal");
 
-        IERC20(usdCoin).transfer(_msgSender(), interestAmt);
+        // reset the accrued interest as zero
+        userMapping[_msgSender()].totInterestAmt = 0;
+        
+        IERC20(usdCoin).transfer(_msgSender(), _vaultDetails.totInterestAmt);
 
         emit WithdrawnPUSD(_msgSender());
     }
 
-    function getInterest(uint256 _depositAmt) public view returns (uint256) {
-        uint256 interestAmt = apy.mul(_depositAmt).mul(block.timestamp - userMapping[_msgSender()].depositedAt).div(365 * 24 * 3600 * 100);
+    function _calcInterest(uint256 _depositedAmt, uint256 _depositedAt) private view returns (uint256) {
+        uint256 interestAmt = apy.mul(_depositedAmt).mul(block.timestamp - _depositedAt).div(365 * 24 * 3600 * 100);
 
         return interestAmt;
+    }
+
+    function getInterest() public view returns (uint256) {
+        return userMapping[_msgSender()].totInterestAmt;
     }
 
     function getDepositedAmt() public view returns (uint256) {
