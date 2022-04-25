@@ -1,7 +1,6 @@
 # Reports
 
 ## Coverage
-<!-- TODO: Copy paste the coverage console output -->
 
 ```console
 ❯ yarn coverage

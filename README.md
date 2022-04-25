@@ -4,13 +4,11 @@ A Vault SC with PRIME token used for deposit & pUSD token as acrued Interest.
 
 ## About
 
-TODO: Put more info about SC
-
 * A Vault SC with PRIME token used for deposit & pUSD token as acrued Interest.
 * [**Instruction**](./instruction.md).
 * Get the **coverage** report [here](./reports.md#coverage).
 * The Vault SC is **deployed** in Rinkeby testnet. Check the details [here](./reports.md#deployment)
-* The Vault SC is **verified** in Rinkeby testnet. Check the details [here](./reports.md#verify) -->
+* The Vault SC is **verified** in Rinkeby testnet. Check the details [here](./reports.md#verify)
 
 ## Installation
 
