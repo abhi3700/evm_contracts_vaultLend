@@ -74,16 +74,23 @@ contract Vault is Ownable, Pausable {
         // read the vault details for the caller
         VaultDetails storage _vaultDetails = userMapping[_msgSender()];
 
-        // calculate the interest when withdrawing pUSD after 1st depositPrime
+        // calculate the interest when withdrawing pUSD after 1st/nth deposit of PRIME
         uint256 interestAmt = 0;
 
         if (_vaultDetails.depositedAmt > 0 && _vaultDetails.depositedAt > 0) {
-            interestAmt = _calcInterest(_vaultDetails.depositedAmt, _vaultDetails.depositedAt);
+            // withdraw both the pending interest since deposit of PRIME & acrued interest as per last deposit PRIME timestamp
+            interestAmt = _calcInterest(_vaultDetails.depositedAmt, _vaultDetails.depositedAt).add(_vaultDetails.totInterestAmt);
+        } else if (_vaultDetails.totInterestAmt > 0) {
+            // withdraw only acrued interest as per last deposit PRIME timestamp
+            interestAmt = _vaultDetails.totInterestAmt;
         } else {
             require(false, "No accrued interest for withdrawal");
         }
 
         _vaultDetails.depositedAt = block.timestamp;        // set the new timestamp & collect the accrued interest based on 1st deposit
+
+        // reset the total interest amount as all the amount is withdrawn after this execution
+        _vaultDetails.totInterestAmt = 0;
         
         IERC20(usdCoin).transfer(_msgSender(), interestAmt);
 

@@ -5,6 +5,16 @@ A Vault SC with PRIME token used for deposit & pUSD token as acrued Interest.
 ## About
 
 * A Vault SC with PRIME token used for deposit & pUSD token as acrued Interest.
+* **ARCHITECTURE**:
+  * Every time when there is a deposit of PRIME, it does these:
+    * resets the deposit timestamp `depositedAt` to current timestamp
+    * adds the deposit amount to `depositedAmt` with the previous deposited amount.
+    * calculates the accrued interest since last deposit timestamp till now & update the `totInterestAmt`.
+    * `transferFrom` the deposit amount from user.
+  * Every time when there is a withdrawal of pUSD, it does these:
+    * resets the deposit timestamp `depositedAt` to current timestamp
+    * Based on condition, calculate the pending interest since last deposit timestamp till now or the `totInterestAmt` or both.
+    * reset the `totInterestAmt` to zero.
 * [**Instruction**](./instruction.md).
 * Get the **coverage** report [here](./reports.md#coverage).
 * The Vault SC is **deployed** in Rinkeby testnet. Check the details [here](./reports.md#deployment)
