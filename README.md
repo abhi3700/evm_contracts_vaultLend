@@ -15,6 +15,7 @@ A Vault SC with PRIME token used for deposit & pUSD token as acrued Interest.
     * resets the deposit timestamp `depositedAt` to current timestamp
     * Based on condition, calculate the pending interest since last deposit timestamp till now or the `totInterestAmt` or both.
     * reset the `totInterestAmt` to zero.
+    * transfer the local interest amount as per situation to the person.
 * [**Instruction**](./instruction.md).
 * Get the **coverage** report [here](./reports.md#coverage).
 * The Vault SC is **deployed** in Rinkeby testnet. Check the details [here](./reports.md#deployment)
